@@ -5,31 +5,32 @@
 	$loginId = trim($_POST["txt_login"]);
 	$password = $_POST["pwd_login"];
 	$errmsg = "";
+
 	if (isset($_POST["submit_login"])) {
-	$conn = dbOpen();
-	if (!$conn) {
-	$errmsg .= mysql_error()."<br />";
+		$conn = dbOpen();
+		if (!$conn) {
+			$errmsg .= mysql_error()."<br />";
+		}
+		else {
+			$rows = retrieveUserByEmailPassword($conn, $loginId, $password);
+			if (is_null($rows)) {
+				$errmsg .= mysql_error()."<br />";
+			}
+			else if (count($rows)!=1) {
+				$errmsg .= "Login failed!<br />";
+			}
+			else if ($rows[0]["status"]!='A') {
+				$errmsg .= "Login failed!<br />";
+			}
+		}
+		dbClose($conn);
+		$conn = FALSE;
 	}
-	else {
-	$rows = retrieveUserByEmailPassword($conn, $loginId, $password);
-	if (is_null($rows)) {
-	$errmsg .= mysql_error()."<br />";
-	}
-	else if (count($rows)!=1) {
-	$errmsg .= "Login failed!<br />";
-	}
-	else if ($rows[0]["status"]!='A') {
-	$errmsg .= "Login failed!<br />";
-	}
-	}
-	dbClose($conn);
-	$conn = FALSE;
-	}
-	if (isset($_POST["submit_login"]) && strcmp($errmsg, "")==0) {
-	$row = $rows[0];
-	$_SESSION["userId"] = $row["_id"];
-	$_SESSION["userName"] = $row["name"];
-	header("Location: client.php");
+		if (isset($_POST["submit_login"]) && strcmp($errmsg, "")==0) {
+		$row = $rows[0];
+		$_SESSION["userId"] = $row["_id"];
+		$_SESSION["userName"] = $row["name"];
+		header("Location: client.php");
 	}
 	else {
 ?>
@@ -68,7 +69,7 @@
     </font>
     <form id='form_login' name='form_login' method='POST' action='client.php'>
         LOGIN ID: <input type='TEXT' id='txt_login' name='txt_login' value='<?=$loginId;?>' size='16' /><br />
-        PASSWORD: <input type='PASSWORD' id='pwd_login' name='pwd_login' value='' size='16' /><br />
+        PASSWORD: <input type='PASSWORD' id='pwd_login' name='pwd_login' value='<?=$password;?>' size='16' /><br />
         <input type='SUBMIT' id='submit_login' name='submit_login' value='Login' onclick="javascript: return validateAdminLogin();"/>
     </form>
 </body>

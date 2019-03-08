@@ -154,4 +154,29 @@
 		$res = mysql_query($sql, $conn);
 		return $res;
 	}
+
+	function retrieveUserByEmail($conn , $email){
+		$sql = "";
+		$sql .= "SELECT * FROM User ";
+		$sql .= "WHERE email='" .$email."' ";
+		$res = mysql_query($sql, $conn);
+		if ($res) {
+			$rows = array();
+			while ($row = mysql_fetch_assoc($res)) {
+				$rows[] = $row;
+			}
+			mysql_free_result($res);
+		}
+		return $rows;
+	}
+
+	function updateStatusByEmail($conn, $status, $email){
+		$sql = "";
+		$sql .= "UPDATE User ";
+		$sql .= "SET status='" .$status. "' ";
+		$sql .= "WHERE email='".$email."' ";
+
+		$res = mysql_query($sql, $conn);
+		return $res;
+	}
 ?>

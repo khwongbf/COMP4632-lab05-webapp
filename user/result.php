@@ -20,7 +20,7 @@
             <!-- navigation -->
             <tr bgcolor='#8AC007' align='CENTER'>
                 <td width='25%'><a href='profile.php?login=<?=$email;?>'>Profile</a></td>
-                <td width='25%'><a href='voting.html?login=<?=$email;?>'>Voting</a></td>
+                <td width='25%'><a href='voting.php?login=<?=$email;?>'>Voting</a></td>
                 <td width='25%'>Result</td>
                 <td align='RIGHT'><input type='SUBMIT' id='submit_logout' name='submit_logout' value='Logout' /></td>
             </tr>

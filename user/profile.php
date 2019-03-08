@@ -167,8 +167,8 @@
             <!-- navigation -->
             <tr bgcolor='#8AC007' align='CENTER'>
                 <td width='25%'>Profile</td>
-                <td width='25%'><a href='voting.php?login=<?=$email;?>'>Voting</a></td>
-                <td width='25%'><a href='result.php?login=<?=$email;?>'>Result</a></td>
+                <td width='25%'><a href='voting.php?login=<?php echo $email;?>'>Voting</a></td>
+                <td width='25%'><a href='result.php?login=<?php echo $email;?>'>Result</a></td>
                 <td align='RIGHT'><input type='SUBMIT' id='submit_logout' name='submit_logout' value='Logout' /></td>
             </tr>
         </table>
@@ -179,17 +179,17 @@
         <?php
 			if (file_exists($uploadFile)) {
 		?>
-		<img src='<?=htmlspecialchars(phpThumbURL("src=".$uploadFile));?>' alt='profile pic' height='150' /><br />
+		<img src='<?php echo htmlspecialchars(phpThumbURL("src=".$uploadFile));?>' alt='profile pic' height='150' /><br />
 		<?php
 			}
 			else {
 		?>
-		<img src='<?=htmlspecialchars(phpThumbURL("src=../images/profile.png"));?>'	alt='profile pic' height='150' /><br />
+		<img src='<?php echo htmlspecialchars(phpThumbURL("src=../images/profile.png"));?>'	alt='profile pic' height='150' /><br />
 		<?php
 			}
 		?>
 
-        <form id='form_upload' name='form_upload' enctype='multipart/form-data' method='POST' action='profile.php?login=<?=$email;?>'>
+        <form id='form_upload' name='form_upload' enctype='multipart/form-data' method='POST' action='profile.php?login=<?php echo $email;?>'>
 
             <input type='BUTTON' id='btn_upload' name='btn_upload' value='Upload profile pic' onclick='javascript: toggleUpload(true);'/>
 
@@ -227,7 +227,7 @@
 
     </font>
 
-    <form id='form_update' name='form_update' enctype='multipart/form-data' method='POST' action='profile.php?login=<?=$email;?>'>
+    <form id='form_update' name='form_update' enctype='multipart/form-data' method='POST' action='profile.php?login=<?php echo $email;?>'>
 
         Phone: <input type='TEXT' id='txt_phone' name='txt_phone' value='' size='11' /><br />
 
@@ -247,7 +247,7 @@
 
     </font>
 
-    <form id='form_change' name='form_change' method='POST' action='profile.php?login=<?=$email;?>'>
+    <form id='form_change' name='form_change' method='POST' action='profile.php?login=<?php echo $email;?>'>
 
         New Password: <input type='PASSWORD' id='pwd_new' name='pwd_new' value='' size='16' /><br />
 

@@ -1,48 +1,49 @@
 ﻿<?php
- session_start();
- // isset($_SESSION["userId"]) or header("Location: login.php") and exit(0);
- include "../mysql.php";
- $conn = FALSE;
- $userId = $_SESSION["userId"];
- $userName = $_SESSION["userName"];
- $email = trim($_POST["txt_email"]);
- $errmsg = "";
- $choice = "";
- if (isset($_POST["submit_client_detail"]) || isset($_GET["hidden_email"])) {
- $conn = dbOpen();
- if (!$conn) {
- $errmsg .= mysql_error()."<br />";
- }
- else {
- // when email is submitted by checkbox
- if (isset($_GET["hidden_email"])) {
- $email = trim($_GET["hidden_email"]);
-if (isset($_GET["chk_account_status"])) {
- $status = "E";
- }
- else {
- $status = "D";
- }
- $res = updateStatusByEmail($conn, $status, $email);
- if (!$res) {
- $errmsg .= mysql_error()."<br />";
- }
- }
- // when email is submitted by textbox
- $rows = retrieveUserByEmail($conn, $email);
- if (is_null($rows)) {
- $errmsg .= mysql_error()."<br />";
- }
- else if (count($rows)!=1) {
- $errmsg .= "User not found!<br />";
- }
- else {
- $row = $rows[0];
- }
- }
- dbClose($conn);
- $conn = FALSE;
- }
+	session_start();
+	isset($_SESSION["userId"]) or header("Location: login.php") and exit(0);
+	include "../mysql.php";
+	$conn = FALSE;
+	$userId = $_SESSION["userId"];
+	$userName = $_SESSION["userName"];
+	$email = trim($_POST["txt_email"]);
+	$errmsg = "";
+	$choice = "";
+
+	if (isset($_POST["submit_client_detail"]) || isset($_GET["hidden_email"])) {
+		$conn = dbOpen();
+		if (!$conn) {
+			$errmsg .= mysql_error()."<br />";
+		}
+		else {
+			// when email is submitted by checkbox
+			if (isset($_GET["hidden_email"])) {
+				$email = trim($_GET["hidden_email"]);
+				if (isset($_GET["chk_account_status"])) {
+					$status = "E";
+				}
+				else {
+					$status = "D";
+				}
+				$res = updateStatusByEmail($conn, $status, $email);
+				if (!$res) {
+					$errmsg .= mysql_error()."<br />";
+				}
+			}
+			// when email is submitted by textbox
+			$rows = retrieveUserByEmail($conn, $email);
+			if (is_null($rows)) {
+				$errmsg .= mysql_error()."<br />";
+			}
+			else if (count($rows)!=1) {
+				$errmsg .= "User not found!<br />";
+			}
+			else {
+				$row = $rows[0];
+			}
+		}
+		dbClose($conn);
+		$conn = FALSE;
+	}
 ?>
 <html>
 <head>
