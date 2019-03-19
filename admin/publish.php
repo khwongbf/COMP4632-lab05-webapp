@@ -1,27 +1,23 @@
 ﻿<?php
-	session_start();
-
-	isset($_SESSION["userId"]) or header("Location: login.php") and exit(0);
-
-	include "../mysql.php";
-
-	$conn = FALSE;
-	$userId = $_SESSION["userId"];
-	$userName = $_SESSION["userName"];
-	$topic = trim($_POST["txt_topic"]);
-	$optionA = trim($_POST["txt_option_a"]);
-	$optionB = trim($_POST["txt_option_b"]);
-	$optionC = trim($_POST["txt_option_c"]);
-	$optionD = trim($_POST["txt_option_d"]);
-
-	$errmsg = "";
-	if (isset($_POST["submit_publish"])) {
+	 session_start();
+	 isset($_SESSION["userId"]) or header("Location: login.php") and exit(0);
+	 include "../mysql.php";
+	 $conn = FALSE;
+	 $userId = $_SESSION["userId"];
+	 $userName = $_SESSION["userName"];
+	 $topic = trim($_POST["txt_topic"]);
+	 $optionA = trim($_POST["txt_option_a"]);
+	 $optionB = trim($_POST["txt_option_b"]);
+	 $optionC = trim($_POST["txt_option_c"]);
+	 $optionD = trim($_POST["txt_option_d"]);
+	 $errmsg = "";
+	 if (isset($_POST["submit_publish"])) {
 		$conn = dbOpen();
 		if (!$conn) {
 			$errmsg .= mysql_error()."<br />";
 		}
 		else {
-			$rows = retrieveVoteByTopic($conn, $poll);
+			$rows = retrieveVoteByTopic($conn, $topic);
 			if (is_null($rows)) {
 				$errmsg .= mysql_error()."<br />";
 			}
@@ -44,61 +40,40 @@
 		}
 		dbClose($conn);
 		$conn = FALSE;
-	}
+	 }
 ?>
-
 <html>
 <head>
     <meta charset='UTF-8'>
     <title>Vote Publish - Vulnerable Voting System</title>
-    <script type="text/javascript">
-        function validatePublish() {
-            var txtTopic = document.getElementById("txt_topic").value;
-            var txtOptionA = document.getElementById("txt_option_a").value;
-            var txtOptionB = document.getElementById("txt_option_b").value;
-            var txtOptionC = document.getElementById("txt_option_c").value;
-            var txtOptionD = document.getElementById("txt_option_d").value;
-            var errmsg = "";
-
-            if (txtTopic == "") {
-                errmsg += "Topic is missing!<br />";
-            }
-            else if (txtTopic.length > 1000) {
-                errmsg += "Topic too long!<br />";
-            }
-
-            if (txtOptionA == "") {
-                errmsg += "Option A is missing!<br />";
-            }
-            else if (txtOptionA.length > 1000) {
-                errmsg += "Option A too long!<br />";
-            }
-
-            if (txtOptionB == "") {
-                errmsg += "Option B is missing!<br />";
-            }
-            else if (txtOptionB.length > 1000) {
-                errmsg += "Option B too long!<br />";
-            }
-
-            if (txtOptionC == "") {
-                errmsg += "Option C is missing!<br />";
-            }
-            else if (txtOptionC.length > 1000) {
-                errmsg += "Option C too long!<br />";
-            }
-
-            if (txtOptionD == "") {
-                errmsg += "Option D is missing!<br />";
-            }
-            else if (txtOptionD.length > 1000) {
-                errmsg += "Option D too long!<br />";
-            }
-
-            document.getElementById("err_publish").innerHTML = errmsg;
-            return (errmsg == "");
-        }
-    </script>
+	<script type='text/javascript'>
+		function validatePublish(){
+			var errmsg="";
+			var txtTopic=document.getElementById("txt_topic").value;
+			var txtOptiona=document.getElementById("txt_option_a").value;
+			var txtOptionb=document.getElementById("txt_option_b").value;
+			var txtOptionc=document.getElementById("txt_option_c").value;
+			var txtOptiond=document.getElementById("txt_option_d").value;
+			if(txtTopic==""){
+				errmsg+="The topic is empty<br />";
+			}
+			if(txtOptiona==""){
+				errmsg+="The option a is empty<br />";
+			}
+			if(txtOptionb==""){
+				errmsg+="The option b is empty<br />";
+			}
+			if(txtOptionc==""){
+				errmsg+="The option c is empty<br />";
+			}
+			if(txtOptiond==""){
+				errmsg+="The option d is empty<br />";
+			}
+			document.getElementById("err_publish").innerHTML=errmsg;
+			return (errmsg=="");
+		}
+	</script>
+	
 </head>
 
 <body>
@@ -125,7 +100,7 @@
 
     <h3>Publish New Vote:</h3>
     <font color='#FF0000'>
-        <span id='err_publish'></span>
+        <span id='err_publish'><?=$errmsg?></span>
     </font>
     <form id='form_publish_vote' name='form_publish_vote' method='POST' action='publish.php'>
         Topic: <input type='TEXT' id='txt_topic' name='txt_topic' value='' size='50' /><br />
@@ -133,7 +108,7 @@
         Option B: <input type='TEXT' id='txt_option_b' name='txt_option_b' value='' size='25' /><br />
         Option C: <input type='TEXT' id='txt_option_c' name='txt_option_c' value='' size='25' /><br />
         Option D: <input type='TEXT' id='txt_option_d' name='txt_option_d' value='' size='25' /><br />
-        <input type='SUBMIT' id='submit_publish' name='submit_publish' value='Publish Vote' onclick="javascript: return validatePublish();"/>
+        <input type='SUBMIT' id='submit_publish' name='submit_publish' value='Publish Vote' onclick='javascript : return validatePublish();'/>
     </form>
 </body>
 </html>

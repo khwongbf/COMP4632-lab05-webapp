@@ -1,12 +1,11 @@
 ﻿<?php
-	session_start();
-	include "../mysql.php";
-	$conn = FALSE;
-	$loginId = trim($_POST["txt_login"]);
-	$password = $_POST["pwd_login"];
-	$errmsg = "";
-
-	if (isset($_POST["submit_login"])) {
+	 session_start();
+	 include "../mysql.php";
+	 $conn = FALSE;
+	 $loginId = trim($_POST["txt_login"]);
+	 $password = $_POST["pwd_login"];
+	 $errmsg = "";
+	 if (isset($_POST["submit_login"])) {
 		$conn = dbOpen();
 		if (!$conn) {
 			$errmsg .= mysql_error()."<br />";
@@ -25,39 +24,33 @@
 		}
 		dbClose($conn);
 		$conn = FALSE;
-	}
-		if (isset($_POST["submit_login"]) && strcmp($errmsg, "")==0) {
+	 }
+	 if (isset($_POST["submit_login"]) && strcmp($errmsg, "")==0) {
 		$row = $rows[0];
 		$_SESSION["userId"] = $row["_id"];
 		$_SESSION["userName"] = $row["name"];
 		header("Location: client.php");
-	}
-	else {
+	 }
+	 else {
 ?>
 <html>
 <head>
-	<meta charset='UTF-8'>
-	<title>Admin Login - Vulnerable Voting System</title>
-
-	<script type="text/javascript">
-		function validateAdminLogin() {
-			var txtLogin = document.getElementById("txt_login").value;
-			var pwdLogin = document.getElementById("pwd_login").value;
-			var errmsg = "";
-
-			if (txtLogin == "") {
-				errmsg += "Login email is missing!<br />";
-			}
-			else if (!validateEmail(txtLogin)) {
-				errmsg += "Login incorrect!<br />";
-			}
-			if (pwdLogin == "") {
-				errmsg += "Password is missing!<br />";
-			}
-
-			document.getElementById("err_login").innerHTML = errmsg;
-			return (errmsg == "");
-		}
+    <meta charset='UTF-8'>
+    <title>Admin Login - Vulnerable Voting System</title>
+	<script type='text/javascript'>
+        function validateLogin() {
+            var txtLogin = document.getElementById("txt_login").value;
+            var pwdLogin = document.getElementById("pwd_login").value;
+            var errmsg = "";
+            if (txtLogin == "") {
+                errmsg += "Login email is missing!<br />";
+            }
+            if (pwdLogin == "") {
+                errmsg += "Password is missing!<br />";
+            }
+            document.getElementById("err_login").innerHTML = errmsg;
+            return (errmsg == "");
+        }
     </script>
 </head>
 
@@ -67,13 +60,13 @@
     <font color='#FF0000'>
         <span id='err_login'><?=$errmsg;?></span>
     </font>
-    <form id='form_login' name='form_login' method='POST' action='client.php'>
+    <form id='form_login' name='form_login' method='POST' action='login.php'>
         LOGIN ID: <input type='TEXT' id='txt_login' name='txt_login' value='<?=$loginId;?>' size='16' /><br />
-        PASSWORD: <input type='PASSWORD' id='pwd_login' name='pwd_login' value='<?=$password;?>' size='16' /><br />
-        <input type='SUBMIT' id='submit_login' name='submit_login' value='Login' onclick="javascript: return validateAdminLogin();"/>
+        PASSWORD: <input type='PASSWORD' id='pwd_login' name='pwd_login' value='' size='16' /><br />
+        <input type='SUBMIT' id='submit_login' name='submit_login' value='Login' onclick='javascript: return validateLogin();'/>
     </form>
 </body>
 </html>
 <?php
-	}
+ }
 ?>
